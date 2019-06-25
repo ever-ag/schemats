@@ -66,7 +66,7 @@ describe('MysqlDatabase', () => {
             MysqlDBReflection.prototype.queryAsync.returns(Promise.resolve([]))
             await db.getEnumTypes('testschema')
             assert.deepEqual(MysqlDBReflection.prototype.queryAsync.getCall(0).args, [
-                'SELECT column_name, column_type, data_type ' +
+                'SELECT column_name AS column_name, column_type AS column_type, data_type AS data_type ' +
                 'FROM information_schema.columns ' +
                 'WHERE data_type IN (\'enum\', \'set\') and table_schema = ?',
                 ['testschema']
@@ -76,7 +76,7 @@ describe('MysqlDatabase', () => {
             MysqlDBReflection.prototype.queryAsync.returns(Promise.resolve([]))
             await db.getEnumTypes()
             assert.deepEqual(MysqlDBReflection.prototype.queryAsync.getCall(0).args, [
-                'SELECT column_name, column_type, data_type ' +
+                'SELECT column_name AS column_name, column_type AS column_type, data_type AS data_type ' +
                 'FROM information_schema.columns ' +
                 'WHERE data_type IN (\'enum\', \'set\') ',
                 []
@@ -120,7 +120,7 @@ describe('MysqlDatabase', () => {
             MysqlDBReflection.prototype.queryAsync.returns(Promise.resolve([]))
             await db.getTableDefinition('testtable', 'testschema')
             assert.deepEqual(MysqlDBReflection.prototype.queryAsync.getCall(0).args, [
-                'SELECT column_name, data_type, is_nullable ' +
+                'SELECT column_name AS column_name, data_type AS data_type, is_nullable AS is_nullable ' +
                 'FROM information_schema.columns ' +
                 'WHERE table_name = ? and table_schema = ?',
                 ['testtable', 'testschema']
