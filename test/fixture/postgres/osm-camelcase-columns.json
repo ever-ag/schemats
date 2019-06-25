@@ -1,0 +1,6 @@
+{
+    "tables": ["users"],
+    "schema": null,
+    "camelCase": "columns",
+    "writeHeader": false
+}
