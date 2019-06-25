@@ -3,8 +3,6 @@
  * Created by xiamx on 2016-08-10.
  */
 
-import * as _ from 'lodash'
-
 import { TableDefinition } from './schemaInterfaces'
 import Options from './options'
 
@@ -89,42 +87,48 @@ function normalizeName (name: string, options: Options): string {
 
 export function generateTableInterface (tableNameRaw: string, tableDefinition: TableDefinition, options: Options) {
     const tableName = options.transformTypeName(tableNameRaw)
-    let members = ''
+    const members: string[] = []
     Object.keys(tableDefinition).map(c => options.transformColumnName(c)).forEach((columnName) => {
-        members += `${columnName}: ${tableName}Fields.${normalizeName(columnName, options)};\n`
+        members.push(`${columnName}: ${tableName}Fields_${normalizeName(columnName, options)}`)
     })
 
+    const interfaceName = normalizeName(tableName, options)
     return `
-        export interface ${normalizeName(tableName, options)} {
-        ${members}
-        }
-    `
+export const ${interfaceName} = t.type({
+${members.join(',\n')}
+});
+export interface ${interfaceName} extends t.TypeOf<typeof ${interfaceName}> { };
+`
 }
 
 export function generateEnumType (enumObject: any, options: Options) {
-    let enumString = ''
+    const iotsTypes: string[] = []
+    const enumTypes: string[] = []
     for (let enumNameRaw in enumObject) {
         const enumName = options.transformTypeName(enumNameRaw)
-        enumString += `export type ${enumName} = `
-        enumString += enumObject[enumNameRaw].map((v: string) => `'${v}'`).join(' | ')
-        enumString += ';\n'
+        const literalTypes = enumObject[enumNameRaw].map((v: string) => `t.literal('${v}')`).join(', ')
+        iotsTypes.push(`export const ${enumName} = t.union([${literalTypes}]);`)
+        enumTypes.push(`export type ${enumName} = t.TypeOf<typeof ${enumName}>;`)
     }
-    return enumString
+    return `\n${iotsTypes.join('\n')}\n\n${enumTypes.join('\n')}\n`
 }
 
 export function generateTableTypes (tableNameRaw: string, tableDefinition: TableDefinition, options: Options) {
     const tableName = options.transformTypeName(tableNameRaw)
-    let fields = ''
+    const types: string[] = []
     Object.keys(tableDefinition).forEach((columnNameRaw) => {
-        let type = tableDefinition[columnNameRaw].tsType
-        let nullable = tableDefinition[columnNameRaw].nullable ? '| null' : ''
         const columnName = options.transformColumnName(columnNameRaw)
-        fields += `export type ${normalizeName(columnName, options)} = ${type}${nullable};\n`
+        const typeName = normalizeName(columnName, options)
+        const iotsType = tableDefinition[columnNameRaw].iotsType
+        if (tableDefinition[columnNameRaw].nullable) {
+            types.push(`const ${tableName}Fields_${typeName} = t.union([t.null, ${iotsType}]);`)
+        } else {
+            types.push(`const ${tableName}Fields_${typeName} = ${iotsType};`)
+        }
     })
 
     return `
-        export namespace ${tableName}Fields {
-        ${fields}
-        }
-    `
+${types.join('\n')}
+
+`
 }

@@ -42,10 +42,10 @@ function buildHeader (db: Database, tables: string[], schema: string|null, optio
          *
          */
 
-    `
+`
 }
 
-export async function typescriptOfTable (db: Database|string, 
+export async function typescriptOfTable (db: Database|string,
                                          table: string,
                                          schema: string,
                                          options = new Options()) {
@@ -83,7 +83,22 @@ export async function typescriptOfSchema (db: Database|string,
     const interfaces = await Promise.all(interfacePromises)
         .then(tsOfTable => tsOfTable.join(''))
 
-    let output = '/* tslint:disable */\n\n'
+    let output = `/* tslint:disable */
+
+import * as t from 'io-ts';
+const DateType = new t.Type<Date, Date, unknown>(
+    'DateType',
+    (u): u is Date => u instanceof Date,
+    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
+const BufferType = new t.Type<Buffer, Buffer, unknown>(
+    'BufferType',
+    (u): u is Buffer => u instanceof Buffer,
+    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
+`
     if (optionsObject.options.writeHeader) {
         output += buildHeader(db, tables, schema, options)
     }

@@ -1,160 +1,170 @@
 /* tslint:disable */
 
-export type enum_enum_col = 'enum1' | 'enum2' | 'enum3';
-export type enum_nullable_enum_col = 'enum1' | 'enum2' | 'enum3';
-export type set_set_col = 'set1' | 'set2' | 'set3';
-export type set_nullable_set_col = 'set1' | 'set2' | 'set3';
+import * as t from 'io-ts';
+const DateType = new t.Type<Date, Date, unknown>(
+    'DateType',
+    (u): u is Date => u instanceof Date,
+    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
+const BufferType = new t.Type<Buffer, Buffer, unknown>(
+    'BufferType',
+    (u): u is Buffer => u instanceof Buffer,
+    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
 
-export namespace usersFields {
-    export type char_col = string;
-    export type nullable_char_col = string | null;
-    export type text_col = string;
-    export type nullable_text_col = string | null;
-    export type tinytext_col = string;
-    export type nullable_tinytext_col = string | null;
-    export type mediumtext_col = string;
-    export type nullable_mediumtext_col = string | null;
-    export type longtext_col = string;
-    export type nullable_longtext_col = string | null;
-    export type time_col = string;
-    export type nullable_time_col = string | null;
-    export type geometry_col = string;
-    export type nullable_geometry_col = string | null;
-    export type integer_col = number;
-    export type nullable_integer_col = number | null;
-    export type int_col = number;
-    export type nullable_int_col = number | null;
-    export type smallint_col = number;
-    export type nullable_smallint_col = number | null;
-    export type mediumint_col = number;
-    export type nullable_mediumint_col = number | null;
-    export type bigint_col = number;
-    export type nullable_bigint_col = number | null;
-    export type double_col = number;
-    export type nullable_double_col = number | null;
-    export type decimal_col = number;
-    export type nullable_decimal_col = number | null;
-    export type numeric_col = number;
-    export type nullable_numeric_col = number | null;
-    export type float_col = number;
-    export type nullable_float_col = number | null;
-    export type year_col = number;
-    export type nullable_year_col = number | null;
-    export type tinyint_col = boolean;
-    export type nullable_tinyint_col = boolean | null;
-    export type date_col = Date;
-    export type nullable_date_col = Date | null;
-    export type datetime_col = Date;
-    export type nullable_datetime_col = Date | null;
-    export type timestamp_col = Date;
-    export type tinyblob_col = Buffer;
-    export type nullable_tinyblob_col = Buffer | null;
-    export type mediumblob_col = Buffer;
-    export type nullable_mediumblob_col = Buffer | null;
-    export type longblob_col = Buffer;
-    export type nullable_longblob_col = Buffer | null;
-    export type blob_col = Buffer;
-    export type nullable_blob_col = Buffer | null;
-    export type binary_col = Buffer;
-    export type nullable_binary_col = Buffer | null;
-    export type varbinary_col = Buffer;
-    export type nullable_varbinary_col = Buffer | null;
-    export type bit_col = Buffer;
-    export type nullable_bit_col = Buffer | null;
-    export type enum_col = enum_enum_col;
-    export type nullable_enum_col = enum_nullable_enum_col | null;
-    export type set_col = set_set_col;
-    export type nullable_set_col = set_nullable_set_col | null;
+export const enum_enum_col = t.union([t.literal('enum1'), t.literal('enum2'), t.literal('enum3')]);
+export const enum_enum_col_nullable = t.union([t.literal('enum1'), t.literal('enum2'), t.literal('enum3')]);
+export const set_set_col = t.union([t.literal('set1'), t.literal('set2'), t.literal('set3')]);
+export const set_set_col_nullable = t.union([t.literal('set1'), t.literal('set2'), t.literal('set3')]);
 
-}
+export type enum_enum_col = t.TypeOf<typeof enum_enum_col>;
+export type enum_enum_col_nullable = t.TypeOf<typeof enum_enum_col_nullable>;
+export type set_set_col = t.TypeOf<typeof set_set_col>;
+export type set_set_col_nullable = t.TypeOf<typeof set_set_col_nullable>;
 
-export interface users {
-    char_col: usersFields.char_col;
-    nullable_char_col: usersFields.nullable_char_col;
-    text_col: usersFields.text_col;
-    nullable_text_col: usersFields.nullable_text_col;
-    tinytext_col: usersFields.tinytext_col;
-    nullable_tinytext_col: usersFields.nullable_tinytext_col;
-    mediumtext_col: usersFields.mediumtext_col;
-    nullable_mediumtext_col: usersFields.nullable_mediumtext_col;
-    longtext_col: usersFields.longtext_col;
-    nullable_longtext_col: usersFields.nullable_longtext_col;
-    time_col: usersFields.time_col;
-    nullable_time_col: usersFields.nullable_time_col;
-    geometry_col: usersFields.geometry_col;
-    nullable_geometry_col: usersFields.nullable_geometry_col;
-    integer_col: usersFields.integer_col;
-    nullable_integer_col: usersFields.nullable_integer_col;
-    int_col: usersFields.int_col;
-    nullable_int_col: usersFields.nullable_int_col;
-    smallint_col: usersFields.smallint_col;
-    nullable_smallint_col: usersFields.nullable_smallint_col;
-    mediumint_col: usersFields.mediumint_col;
-    nullable_mediumint_col: usersFields.nullable_mediumint_col;
-    bigint_col: usersFields.bigint_col;
-    nullable_bigint_col: usersFields.nullable_bigint_col;
-    double_col: usersFields.double_col;
-    nullable_double_col: usersFields.nullable_double_col;
-    decimal_col: usersFields.decimal_col;
-    nullable_decimal_col: usersFields.nullable_decimal_col;
-    numeric_col: usersFields.numeric_col;
-    nullable_numeric_col: usersFields.nullable_numeric_col;
-    float_col: usersFields.float_col;
-    nullable_float_col: usersFields.nullable_float_col;
-    year_col: usersFields.year_col;
-    nullable_year_col: usersFields.nullable_year_col;
-    tinyint_col: usersFields.tinyint_col;
-    nullable_tinyint_col: usersFields.nullable_tinyint_col;
-    date_col: usersFields.date_col;
-    nullable_date_col: usersFields.nullable_date_col;
-    datetime_col: usersFields.datetime_col;
-    nullable_datetime_col: usersFields.nullable_datetime_col;
-    timestamp_col: usersFields.timestamp_col;
-    tinyblob_col: usersFields.tinyblob_col;
-    nullable_tinyblob_col: usersFields.nullable_tinyblob_col;
-    mediumblob_col: usersFields.mediumblob_col;
-    nullable_mediumblob_col: usersFields.nullable_mediumblob_col;
-    longblob_col: usersFields.longblob_col;
-    nullable_longblob_col: usersFields.nullable_longblob_col;
-    blob_col: usersFields.blob_col;
-    nullable_blob_col: usersFields.nullable_blob_col;
-    binary_col: usersFields.binary_col;
-    nullable_binary_col: usersFields.nullable_binary_col;
-    varbinary_col: usersFields.varbinary_col;
-    nullable_varbinary_col: usersFields.nullable_varbinary_col;
-    bit_col: usersFields.bit_col;
-    nullable_bit_col: usersFields.nullable_bit_col;
-    enum_col: usersFields.enum_col;
-    nullable_enum_col: usersFields.nullable_enum_col;
-    set_col: usersFields.set_col;
-    nullable_set_col: usersFields.nullable_set_col;
+const usersFields_bigint_col = t.number;
+const usersFields_bigint_col_nullable = t.union([t.null, t.number]);
+const usersFields_binary_col = BufferType;
+const usersFields_binary_col_nullable = t.union([t.null, BufferType]);
+const usersFields_bit_col = BufferType;
+const usersFields_bit_col_nullable = t.union([t.null, BufferType]);
+const usersFields_blob_col = BufferType;
+const usersFields_blob_col_nullable = t.union([t.null, BufferType]);
+const usersFields_char_col = t.string;
+const usersFields_char_col_nullable = t.union([t.null, t.string]);
+const usersFields_date_col = DateType;
+const usersFields_date_col_nullable = t.union([t.null, DateType]);
+const usersFields_datetime_col = DateType;
+const usersFields_datetime_col_nullable = t.union([t.null, DateType]);
+const usersFields_decimal_col = t.number;
+const usersFields_decimal_col_nullable = t.union([t.null, t.number]);
+const usersFields_double_col = t.number;
+const usersFields_double_col_nullable = t.union([t.null, t.number]);
+const usersFields_enum_col = enum_enum_col;
+const usersFields_enum_col_nullable = t.union([t.null, enum_enum_col_nullable]);
+const usersFields_float_col = t.number;
+const usersFields_float_col_nullable = t.union([t.null, t.number]);
+const usersFields_geometry_col = t.string;
+const usersFields_geometry_col_nullable = t.union([t.null, t.string]);
+const usersFields_int_col = t.number;
+const usersFields_int_col_nullable = t.union([t.null, t.number]);
+const usersFields_integer_col = t.number;
+const usersFields_integer_col_nullable = t.union([t.null, t.number]);
+const usersFields_longblob_col = BufferType;
+const usersFields_longblob_col_nullable = t.union([t.null, BufferType]);
+const usersFields_longtext_col = t.string;
+const usersFields_longtext_col_nullable = t.union([t.null, t.string]);
+const usersFields_mediumblob_col = BufferType;
+const usersFields_mediumblob_col_nullable = t.union([t.null, BufferType]);
+const usersFields_mediumint_col = t.number;
+const usersFields_mediumint_col_nullable = t.union([t.null, t.number]);
+const usersFields_mediumtext_col = t.string;
+const usersFields_mediumtext_col_nullable = t.union([t.null, t.string]);
+const usersFields_numeric_col = t.number;
+const usersFields_numeric_col_nullable = t.union([t.null, t.number]);
+const usersFields_set_col = set_set_col;
+const usersFields_set_col_nullable = t.union([t.null, set_set_col_nullable]);
+const usersFields_smallint_col = t.number;
+const usersFields_smallint_col_nullable = t.union([t.null, t.number]);
+const usersFields_text_col = t.string;
+const usersFields_text_col_nullable = t.union([t.null, t.string]);
+const usersFields_time_col = t.string;
+const usersFields_time_col_nullable = t.union([t.null, t.string]);
+const usersFields_timestamp_col = DateType;
+const usersFields_tinyblob_col = BufferType;
+const usersFields_tinyblob_col_nullable = t.union([t.null, BufferType]);
+const usersFields_tinyint_col = t.boolean;
+const usersFields_tinyint_col_nullable = t.union([t.null, t.boolean]);
+const usersFields_tinytext_col = t.string;
+const usersFields_tinytext_col_nullable = t.union([t.null, t.string]);
+const usersFields_varbinary_col = BufferType;
+const usersFields_varbinary_col_nullable = t.union([t.null, BufferType]);
+const usersFields_year_col = t.number;
+const usersFields_year_col_nullable = t.union([t.null, t.number]);
 
-}
+export const users = t.type({
+    bigint_col: usersFields_bigint_col,
+    bigint_col_nullable: usersFields_bigint_col_nullable,
+    binary_col: usersFields_binary_col,
+    binary_col_nullable: usersFields_binary_col_nullable,
+    bit_col: usersFields_bit_col,
+    bit_col_nullable: usersFields_bit_col_nullable,
+    blob_col: usersFields_blob_col,
+    blob_col_nullable: usersFields_blob_col_nullable,
+    char_col: usersFields_char_col,
+    char_col_nullable: usersFields_char_col_nullable,
+    date_col: usersFields_date_col,
+    date_col_nullable: usersFields_date_col_nullable,
+    datetime_col: usersFields_datetime_col,
+    datetime_col_nullable: usersFields_datetime_col_nullable,
+    decimal_col: usersFields_decimal_col,
+    decimal_col_nullable: usersFields_decimal_col_nullable,
+    double_col: usersFields_double_col,
+    double_col_nullable: usersFields_double_col_nullable,
+    enum_col: usersFields_enum_col,
+    enum_col_nullable: usersFields_enum_col_nullable,
+    float_col: usersFields_float_col,
+    float_col_nullable: usersFields_float_col_nullable,
+    geometry_col: usersFields_geometry_col,
+    geometry_col_nullable: usersFields_geometry_col_nullable,
+    int_col: usersFields_int_col,
+    int_col_nullable: usersFields_int_col_nullable,
+    integer_col: usersFields_integer_col,
+    integer_col_nullable: usersFields_integer_col_nullable,
+    longblob_col: usersFields_longblob_col,
+    longblob_col_nullable: usersFields_longblob_col_nullable,
+    longtext_col: usersFields_longtext_col,
+    longtext_col_nullable: usersFields_longtext_col_nullable,
+    mediumblob_col: usersFields_mediumblob_col,
+    mediumblob_col_nullable: usersFields_mediumblob_col_nullable,
+    mediumint_col: usersFields_mediumint_col,
+    mediumint_col_nullable: usersFields_mediumint_col_nullable,
+    mediumtext_col: usersFields_mediumtext_col,
+    mediumtext_col_nullable: usersFields_mediumtext_col_nullable,
+    numeric_col: usersFields_numeric_col,
+    numeric_col_nullable: usersFields_numeric_col_nullable,
+    set_col: usersFields_set_col,
+    set_col_nullable: usersFields_set_col_nullable,
+    smallint_col: usersFields_smallint_col,
+    smallint_col_nullable: usersFields_smallint_col_nullable,
+    text_col: usersFields_text_col,
+    text_col_nullable: usersFields_text_col_nullable,
+    time_col: usersFields_time_col,
+    time_col_nullable: usersFields_time_col_nullable,
+    timestamp_col: usersFields_timestamp_col,
+    tinyblob_col: usersFields_tinyblob_col,
+    tinyblob_col_nullable: usersFields_tinyblob_col_nullable,
+    tinyint_col: usersFields_tinyint_col,
+    tinyint_col_nullable: usersFields_tinyint_col_nullable,
+    tinytext_col: usersFields_tinytext_col,
+    tinytext_col_nullable: usersFields_tinytext_col_nullable,
+    varbinary_col: usersFields_varbinary_col,
+    varbinary_col_nullable: usersFields_varbinary_col_nullable,
+    year_col: usersFields_year_col,
+    year_col_nullable: usersFields_year_col_nullable
+});
+export interface users extends t.TypeOf<typeof users> { };
 
-export namespace user_enumsFields {
-    export type enum_col = enum_enum_col;
-    export type nullable_enum_col = enum_nullable_enum_col | null;
-    export type set_col = set_set_col;
-    export type nullable_set_col = set_nullable_set_col | null;
+const user_enumsFields_enum_col = enum_enum_col;
+const user_enumsFields_enum_col_nullable = t.union([t.null, enum_enum_col_nullable]);
+const user_enumsFields_set_col = set_set_col;
+const user_enumsFields_set_col_nullable = t.union([t.null, set_set_col_nullable]);
 
-}
+export const user_enums = t.type({
+    enum_col: user_enumsFields_enum_col,
+    enum_col_nullable: user_enumsFields_enum_col_nullable,
+    set_col: user_enumsFields_set_col,
+    set_col_nullable: user_enumsFields_set_col_nullable
+});
+export interface user_enums extends t.TypeOf<typeof user_enums> { };
 
-export interface user_enums {
-    enum_col: user_enumsFields.enum_col;
-    nullable_enum_col: user_enumsFields.nullable_enum_col;
-    set_col: user_enumsFields.set_col;
-    nullable_set_col: user_enumsFields.nullable_set_col;
+const packageFields_number_ = t.number;
+const packageFields_string_ = t.string;
 
-}
-
-export namespace packageFields {
-    export type number_ = number;
-    export type string_ = string;
-
-}
-
-export interface package_ {
-    number: packageFields.number_;
-    string: packageFields.string_;
-
-}
+export const package_ = t.type({
+    number: packageFields_number_,
+    string: packageFields_string_
+});
+export interface package_ extends t.TypeOf<typeof package_> { };

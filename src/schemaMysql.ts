@@ -1,14 +1,16 @@
 import * as mysql from 'mysql'
-import { mapValues, keys, isEqual } from 'lodash'
+import { keys, isEqual } from 'lodash'
 import { parse as urlParse } from 'url'
 import { TableDefinition, Database } from './schemaInterfaces'
 import Options from './options'
+import { DatabaseBase, TypescriptType } from './schemaBase'
 
-export class MysqlDatabase implements Database {
+export class MysqlDatabase extends DatabaseBase implements Database {
     private db: mysql.IConnection
     private defaultSchema: string
 
     constructor (public connectionString: string) {
+        super()
         this.db = mysql.createConnection(connectionString)
         let url = urlParse(connectionString, true)
         if (url && url.pathname) {
@@ -20,66 +22,50 @@ export class MysqlDatabase implements Database {
     }
 
     // uses the type mappings from https://github.com/mysqljs/ where sensible
-    private static mapTableDefinitionToType (tableDefinition: TableDefinition, customTypes: string[], options: Options): TableDefinition {
-        if (!options) throw new Error()
-        return mapValues(tableDefinition, column => {
-            switch (column.udtName) {
-                case 'char':
-                case 'varchar':
-                case 'text':
-                case 'tinytext':
-                case 'mediumtext':
-                case 'longtext':
-                case 'time':
-                case 'geometry':
-                case 'set':
-                case 'enum':
-                    // keep set and enum defaulted to string if custom type not mapped
-                    column.tsType = 'string'
-                    return column
-                case 'integer':
-                case 'int':
-                case 'smallint':
-                case 'mediumint':
-                case 'bigint':
-                case 'double':
-                case 'decimal':
-                case 'numeric':
-                case 'float':
-                case 'year':
-                    column.tsType = 'number'
-                    return column
-                case 'tinyint':
-                    column.tsType = 'boolean'
-                    return column
-                case 'json':
-                    column.tsType = 'Object'
-                    return column
-                case 'date':
-                case 'datetime':
-                case 'timestamp':
-                    column.tsType = 'Date'
-                    return column
-                case 'tinyblob':
-                case 'mediumblob':
-                case 'longblob':
-                case 'blob':
-                case 'binary':
-                case 'varbinary':
-                case 'bit':
-                    column.tsType = 'Buffer'
-                    return column
-                default:
-                    if (customTypes.indexOf(column.udtName) !== -1) {
-                        column.tsType = options.transformTypeName(column.udtName)
-                        return column
-                    } else {
-                        console.log(`Type [${column.udtName}] has been mapped to [any] because no specific type has been found.`)
-                        column.tsType = 'any'
-                        return column
-                    }
-            }
-        })
+    protected static mapTableTypeToNativeType (tableType: string): TypescriptType {
+        switch (tableType) {
+            case 'char':
+            case 'varchar':
+            case 'text':
+            case 'tinytext':
+            case 'mediumtext':
+            case 'longtext':
+            case 'time':
+            case 'geometry':
+            case 'set':
+            case 'enum':
+                // keep set and enum defaulted to string if custom type not mapped
+                return 'string'
+            case 'integer':
+            case 'int':
+            case 'smallint':
+            case 'mediumint':
+            case 'bigint':
+            case 'double':
+            case 'decimal':
+            case 'numeric':
+            case 'float':
+            case 'year':
+                return 'number'
+            case 'tinyint':
+                return 'boolean'
+            case 'json':
+                return 'Object'
+            case 'date':
+            case 'datetime':
+            case 'timestamp':
+                return 'Date'
+            case 'tinyblob':
+            case 'mediumblob':
+            case 'longblob':
+            case 'blob':
+            case 'binary':
+            case 'varbinary':
+            case 'bit':
+                return 'Buffer'
+            default:
+                return 'any'
+        }
     }
 
     private static parseMysqlEnumeration (mysqlEnum: string): string[] {

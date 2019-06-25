@@ -1,133 +1,148 @@
 /* tslint:disable */
 
-export type format_enum = 'html' | 'markdown' | 'text';
-export type user_status_enum = 'active' | 'confirmed' | 'deleted' | 'pending' | 'suspended';
+import * as t from 'io-ts';
+const DateType = new t.Type<Date, Date, unknown>(
+    'DateType',
+    (u): u is Date => u instanceof Date,
+    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
+const BufferType = new t.Type<Buffer, Buffer, unknown>(
+    'BufferType',
+    (u): u is Buffer => u instanceof Buffer,
+    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
 
-export namespace usersFields {
-    export type email = string;
-    export type id = number;
-    export type pass_crypt = string;
-    export type creation_time = Date;
-    export type display_name = string;
-    export type data_public = boolean;
-    export type description = string;
-    export type home_lat = number | null;
-    export type home_lon = number | null;
-    export type home_zoom = number | null;
-    export type nearby = number | null;
-    export type pass_salt = string | null;
-    export type image_file_name = string | null;
-    export type email_valid = boolean;
-    export type new_email = string | null;
-    export type creation_ip = string | null;
-    export type languages = string | null;
-    export type status = user_status_enum;
-    export type terms_agreed = Date | null;
-    export type consider_pd = boolean;
-    export type preferred_editor = string | null;
-    export type terms_seen = boolean;
-    export type auth_uid = string | null;
-    export type description_format = format_enum;
-    export type image_fingerprint = string | null;
-    export type changesets_count = number;
-    export type traces_count = number;
-    export type diary_entries_count = number;
-    export type image_use_gravatar = boolean;
-    export type image_content_type = string | null;
-    export type auth_provider = string | null;
-    export type uuid_column = string | null;
-    export type number_ = number | null;
-    export type string_ = string | null;
-    export type money_col = number | null;
-    export type char_col = string | null;
-    export type time_col = string | null;
-    export type inet_col = string | null;
-    export type jsonb_col = Object | null;
-    export type numeric_col = number | null;
-    export type bytea_col = string | null;
-    export type bool_array_col = Array<boolean> | null;
-    export type varchar_array_col = Array<string> | null;
-    export type int2_array_col = Array<number> | null;
-    export type int4_array_col = Array<number> | null;
-    export type int8_array_col = Array<number> | null;
-    export type uuid_array_col = Array<string> | null;
-    export type text_array_col = Array<string> | null;
-    export type bytea_array_col = Array<string> | null;
-    export type real_col = number | null;
-    export type double_col = number | null;
-    export type time_with_tz = string | null;
-    export type oid_col = number | null;
-    export type interval_col = string | null;
-    export type json_col = Object | null;
-    export type date_col = Date | null;
-    export type unspported_path_type = any | null;
-    export type name_type_col = string | null;
-    export type json_array_col = Array<Object> | null;
-    export type jsonb_array_col = Array<Object> | null;
-    export type timestamptz_array_col = Array<Date> | null;
+export const format_enum = t.union([t.literal('html'), t.literal('markdown'), t.literal('text')]);
+export const user_status_enum = t.union([t.literal('active'), t.literal('confirmed'), t.literal('deleted'), t.literal('pending'), t.literal('suspended')]);
 
-}
+export type format_enum = t.TypeOf<typeof format_enum>;
+export type user_status_enum = t.TypeOf<typeof user_status_enum>;
 
-export interface users {
-    email: usersFields.email;
-    id: usersFields.id;
-    pass_crypt: usersFields.pass_crypt;
-    creation_time: usersFields.creation_time;
-    display_name: usersFields.display_name;
-    data_public: usersFields.data_public;
-    description: usersFields.description;
-    home_lat: usersFields.home_lat;
-    home_lon: usersFields.home_lon;
-    home_zoom: usersFields.home_zoom;
-    nearby: usersFields.nearby;
-    pass_salt: usersFields.pass_salt;
-    image_file_name: usersFields.image_file_name;
-    email_valid: usersFields.email_valid;
-    new_email: usersFields.new_email;
-    creation_ip: usersFields.creation_ip;
-    languages: usersFields.languages;
-    status: usersFields.status;
-    terms_agreed: usersFields.terms_agreed;
-    consider_pd: usersFields.consider_pd;
-    preferred_editor: usersFields.preferred_editor;
-    terms_seen: usersFields.terms_seen;
-    auth_uid: usersFields.auth_uid;
-    description_format: usersFields.description_format;
-    image_fingerprint: usersFields.image_fingerprint;
-    changesets_count: usersFields.changesets_count;
-    traces_count: usersFields.traces_count;
-    diary_entries_count: usersFields.diary_entries_count;
-    image_use_gravatar: usersFields.image_use_gravatar;
-    image_content_type: usersFields.image_content_type;
-    auth_provider: usersFields.auth_provider;
-    uuid_column: usersFields.uuid_column;
-    number: usersFields.number_;
-    string: usersFields.string_;
-    money_col: usersFields.money_col;
-    char_col: usersFields.char_col;
-    time_col: usersFields.time_col;
-    inet_col: usersFields.inet_col;
-    jsonb_col: usersFields.jsonb_col;
-    numeric_col: usersFields.numeric_col;
-    bytea_col: usersFields.bytea_col;
-    bool_array_col: usersFields.bool_array_col;
-    varchar_array_col: usersFields.varchar_array_col;
-    int2_array_col: usersFields.int2_array_col;
-    int4_array_col: usersFields.int4_array_col;
-    int8_array_col: usersFields.int8_array_col;
-    uuid_array_col: usersFields.uuid_array_col;
-    text_array_col: usersFields.text_array_col;
-    bytea_array_col: usersFields.bytea_array_col;
-    real_col: usersFields.real_col;
-    double_col: usersFields.double_col;
-    time_with_tz: usersFields.time_with_tz;
-    oid_col: usersFields.oid_col;
-    interval_col: usersFields.interval_col;
-    json_col: usersFields.json_col;
-    date_col: usersFields.date_col;
-    unspported_path_type: usersFields.unspported_path_type;
-    name_type_col: usersFields.name_type_col;
-    json_array_col: usersFields.json_array_col;
-    jsonb_array_col: usersFields.jsonb_array_col;
-    timestamptz_array_col: usersFields.timestamptz_array_col;
-}
+const usersFields_email = t.string;
+const usersFields_id = t.number;
+const usersFields_pass_crypt = t.string;
+const usersFields_creation_time = DateType;
+const usersFields_display_name = t.string;
+const usersFields_data_public = t.boolean;
+const usersFields_description = t.string;
+const usersFields_home_lat = t.union([t.null, t.number]);
+const usersFields_home_lon = t.union([t.null, t.number]);
+const usersFields_home_zoom = t.union([t.null, t.number]);
+const usersFields_nearby = t.union([t.null, t.number]);
+const usersFields_pass_salt = t.union([t.null, t.string]);
+const usersFields_image_file_name = t.union([t.null, t.string]);
+const usersFields_email_valid = t.boolean;
+const usersFields_new_email = t.union([t.null, t.string]);
+const usersFields_creation_ip = t.union([t.null, t.string]);
+const usersFields_languages = t.union([t.null, t.string]);
+const usersFields_status = user_status_enum;
+const usersFields_terms_agreed = t.union([t.null, DateType]);
+const usersFields_consider_pd = t.boolean;
+const usersFields_preferred_editor = t.union([t.null, t.string]);
+const usersFields_terms_seen = t.boolean;
+const usersFields_auth_uid = t.union([t.null, t.string]);
+const usersFields_description_format = format_enum;
+const usersFields_image_fingerprint = t.union([t.null, t.string]);
+const usersFields_changesets_count = t.number;
+const usersFields_traces_count = t.number;
+const usersFields_diary_entries_count = t.number;
+const usersFields_image_use_gravatar = t.boolean;
+const usersFields_image_content_type = t.union([t.null, t.string]);
+const usersFields_auth_provider = t.union([t.null, t.string]);
+const usersFields_uuid_column = t.union([t.null, t.string]);
+const usersFields_number_ = t.union([t.null, t.number]);
+const usersFields_string_ = t.union([t.null, t.string]);
+const usersFields_money_col = t.union([t.null, t.number]);
+const usersFields_char_col = t.union([t.null, t.string]);
+const usersFields_time_col = t.union([t.null, t.string]);
+const usersFields_inet_col = t.union([t.null, t.string]);
+const usersFields_jsonb_col = t.union([t.null, t.object]);
+const usersFields_numeric_col = t.union([t.null, t.number]);
+const usersFields_bytea_col = t.union([t.null, t.string]);
+const usersFields_bool_array_col = t.union([t.null, t.array(t.boolean)]);
+const usersFields_varchar_array_col = t.union([t.null, t.array(t.string)]);
+const usersFields_int2_array_col = t.union([t.null, t.array(t.number)]);
+const usersFields_int4_array_col = t.union([t.null, t.array(t.number)]);
+const usersFields_int8_array_col = t.union([t.null, t.array(t.number)]);
+const usersFields_uuid_array_col = t.union([t.null, t.array(t.string)]);
+const usersFields_text_array_col = t.union([t.null, t.array(t.string)]);
+const usersFields_bytea_array_col = t.union([t.null, t.array(t.string)]);
+const usersFields_real_col = t.union([t.null, t.number]);
+const usersFields_double_col = t.union([t.null, t.number]);
+const usersFields_time_with_tz = t.union([t.null, t.string]);
+const usersFields_oid_col = t.union([t.null, t.number]);
+const usersFields_interval_col = t.union([t.null, t.string]);
+const usersFields_json_col = t.union([t.null, t.object]);
+const usersFields_date_col = t.union([t.null, DateType]);
+const usersFields_unspported_path_type = t.union([t.null, t.any]);
+const usersFields_name_type_col = t.union([t.null, t.string]);
+const usersFields_json_array_col = t.union([t.null, t.array(t.object)]);
+const usersFields_jsonb_array_col = t.union([t.null, t.array(t.object)]);
+const usersFields_timestamptz_array_col = t.union([t.null, t.array(DateType)]);
+
+export const users = t.type({
+    email: usersFields_email,
+    id: usersFields_id,
+    pass_crypt: usersFields_pass_crypt,
+    creation_time: usersFields_creation_time,
+    display_name: usersFields_display_name,
+    data_public: usersFields_data_public,
+    description: usersFields_description,
+    home_lat: usersFields_home_lat,
+    home_lon: usersFields_home_lon,
+    home_zoom: usersFields_home_zoom,
+    nearby: usersFields_nearby,
+    pass_salt: usersFields_pass_salt,
+    image_file_name: usersFields_image_file_name,
+    email_valid: usersFields_email_valid,
+    new_email: usersFields_new_email,
+    creation_ip: usersFields_creation_ip,
+    languages: usersFields_languages,
+    status: usersFields_status,
+    terms_agreed: usersFields_terms_agreed,
+    consider_pd: usersFields_consider_pd,
+    preferred_editor: usersFields_preferred_editor,
+    terms_seen: usersFields_terms_seen,
+    auth_uid: usersFields_auth_uid,
+    description_format: usersFields_description_format,
+    image_fingerprint: usersFields_image_fingerprint,
+    changesets_count: usersFields_changesets_count,
+    traces_count: usersFields_traces_count,
+    diary_entries_count: usersFields_diary_entries_count,
+    image_use_gravatar: usersFields_image_use_gravatar,
+    image_content_type: usersFields_image_content_type,
+    auth_provider: usersFields_auth_provider,
+    uuid_column: usersFields_uuid_column,
+    number: usersFields_number_,
+    string: usersFields_string_,
+    money_col: usersFields_money_col,
+    char_col: usersFields_char_col,
+    time_col: usersFields_time_col,
+    inet_col: usersFields_inet_col,
+    jsonb_col: usersFields_jsonb_col,
+    numeric_col: usersFields_numeric_col,
+    bytea_col: usersFields_bytea_col,
+    bool_array_col: usersFields_bool_array_col,
+    varchar_array_col: usersFields_varchar_array_col,
+    int2_array_col: usersFields_int2_array_col,
+    int4_array_col: usersFields_int4_array_col,
+    int8_array_col: usersFields_int8_array_col,
+    uuid_array_col: usersFields_uuid_array_col,
+    text_array_col: usersFields_text_array_col,
+    bytea_array_col: usersFields_bytea_array_col,
+    real_col: usersFields_real_col,
+    double_col: usersFields_double_col,
+    time_with_tz: usersFields_time_with_tz,
+    oid_col: usersFields_oid_col,
+    interval_col: usersFields_interval_col,
+    json_col: usersFields_json_col,
+    date_col: usersFields_date_col,
+    unspported_path_type: usersFields_unspported_path_type,
+    name_type_col: usersFields_name_type_col,
+    json_array_col: usersFields_json_array_col,
+    jsonb_array_col: usersFields_jsonb_array_col,
+    timestamptz_array_col: usersFields_timestamptz_array_col
+});
+export interface users extends t.TypeOf<typeof users> { };

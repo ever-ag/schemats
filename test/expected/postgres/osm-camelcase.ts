@@ -1,134 +1,148 @@
 /* tslint:disable */
 
-export type FormatEnum = 'html' | 'markdown' | 'text';
-export type UserStatusEnum = 'active' | 'confirmed' | 'deleted' | 'pending' | 'suspended';
+import * as t from 'io-ts';
+const DateType = new t.Type<Date, Date, unknown>(
+    'DateType',
+    (u): u is Date => u instanceof Date,
+    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
+const BufferType = new t.Type<Buffer, Buffer, unknown>(
+    'BufferType',
+    (u): u is Buffer => u instanceof Buffer,
+    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),
+    a => a,
+);
 
-export namespace UsersFields {
-    export type email = string;
-    export type id = number;
-    export type passCrypt = string;
-    export type creationTime = Date;
-    export type displayName = string;
-    export type dataPublic = boolean;
-    export type description = string;
-    export type homeLat = number | null;
-    export type homeLon = number | null;
-    export type homeZoom = number | null;
-    export type nearby = number | null;
-    export type passSalt = string | null;
-    export type imageFileName = string | null;
-    export type emailValid = boolean;
-    export type newEmail = string | null;
-    export type creationIp = string | null;
-    export type languages = string | null;
-    export type status = UserStatusEnum;
-    export type termsAgreed = Date | null;
-    export type considerPd = boolean;
-    export type preferredEditor = string | null;
-    export type termsSeen = boolean;
-    export type authUid = string | null;
-    export type descriptionFormat = FormatEnum;
-    export type imageFingerprint = string | null;
-    export type changesetsCount = number;
-    export type tracesCount = number;
-    export type diaryEntriesCount = number;
-    export type imageUseGravatar = boolean;
-    export type imageContentType = string | null;
-    export type authProvider = string | null;
-    export type uuidColumn = string | null;
-    export type number_ = number | null;
-    export type string_ = string | null;
-    export type moneyCol = number | null;
-    export type charCol = string | null;
-    export type timeCol = string | null;
-    export type inetCol = string | null;
-    export type jsonbCol = Object | null;
-    export type numericCol = number | null;
-    export type byteaCol = string | null;
-    export type boolArrayCol = Array<boolean> | null;
-    export type varcharArrayCol = Array<string> | null;
-    export type int2ArrayCol = Array<number> | null;
-    export type int4ArrayCol = Array<number> | null;
-    export type int8ArrayCol = Array<number> | null;
-    export type uuidArrayCol = Array<string> | null;
-    export type textArrayCol = Array<string> | null;
-    export type byteaArrayCol = Array<string> | null;
-    export type realCol = number | null;
-    export type doubleCol = number | null;
-    export type timeWithTz = string | null;
-    export type oidCol = number | null;
-    export type intervalCol = string | null;
-    export type jsonCol = Object | null;
-    export type dateCol = Date | null;
-    export type unspportedPathType = any | null;
-    export type nameTypeCol = string | null;
-    export type jsonArrayCol = Array<Object> | null;
-    export type jsonbArrayCol = Array<Object> | null;
-    export type timestamptzArrayCol = Array<Date> | null;
+export const FormatEnum = t.union([t.literal('html'), t.literal('markdown'), t.literal('text')]);
+export const UserStatusEnum = t.union([t.literal('active'), t.literal('confirmed'), t.literal('deleted'), t.literal('pending'), t.literal('suspended')]);
 
-}
+export type FormatEnum = t.TypeOf<typeof FormatEnum>;
+export type UserStatusEnum = t.TypeOf<typeof UserStatusEnum>;
 
-export interface Users {
-    email: UsersFields.email;
-    id: UsersFields.id;
-    passCrypt: UsersFields.passCrypt;
-    creationTime: UsersFields.creationTime;
-    displayName: UsersFields.displayName;
-    dataPublic: UsersFields.dataPublic;
-    description: UsersFields.description;
-    homeLat: UsersFields.homeLat;
-    homeLon: UsersFields.homeLon;
-    homeZoom: UsersFields.homeZoom;
-    nearby: UsersFields.nearby;
-    passSalt: UsersFields.passSalt;
-    imageFileName: UsersFields.imageFileName;
-    emailValid: UsersFields.emailValid;
-    newEmail: UsersFields.newEmail;
-    creationIp: UsersFields.creationIp;
-    languages: UsersFields.languages;
-    status: UsersFields.status;
-    termsAgreed: UsersFields.termsAgreed;
-    considerPd: UsersFields.considerPd;
-    preferredEditor: UsersFields.preferredEditor;
-    termsSeen: UsersFields.termsSeen;
-    authUid: UsersFields.authUid;
-    descriptionFormat: UsersFields.descriptionFormat;
-    imageFingerprint: UsersFields.imageFingerprint;
-    changesetsCount: UsersFields.changesetsCount;
-    tracesCount: UsersFields.tracesCount;
-    diaryEntriesCount: UsersFields.diaryEntriesCount;
-    imageUseGravatar: UsersFields.imageUseGravatar;
-    imageContentType: UsersFields.imageContentType;
-    authProvider: UsersFields.authProvider;
-    uuidColumn: UsersFields.uuidColumn;
-    number: UsersFields.number_;
-    string: UsersFields.string_;
-    moneyCol: UsersFields.moneyCol;
-    charCol: UsersFields.charCol;
-    timeCol: UsersFields.timeCol;
-    inetCol: UsersFields.inetCol;
-    jsonbCol: UsersFields.jsonbCol;
-    numericCol: UsersFields.numericCol;
-    byteaCol: UsersFields.byteaCol;
-    boolArrayCol: UsersFields.boolArrayCol;
-    varcharArrayCol: UsersFields.varcharArrayCol;
-    int2ArrayCol: UsersFields.int2ArrayCol;
-    int4ArrayCol: UsersFields.int4ArrayCol;
-    int8ArrayCol: UsersFields.int8ArrayCol;
-    uuidArrayCol: UsersFields.uuidArrayCol;
-    textArrayCol: UsersFields.textArrayCol;
-    byteaArrayCol: UsersFields.byteaArrayCol;
-    realCol: UsersFields.realCol;
-    doubleCol: UsersFields.doubleCol;
-    timeWithTz: UsersFields.timeWithTz;
-    oidCol: UsersFields.oidCol;
-    intervalCol: UsersFields.intervalCol;
-    jsonCol: UsersFields.jsonCol;
-    dateCol: UsersFields.dateCol;
-    unspportedPathType: UsersFields.unspportedPathType;
-    nameTypeCol: UsersFields.nameTypeCol;
-    jsonArrayCol: UsersFields.jsonArrayCol;
-    jsonbArrayCol: UsersFields.jsonbArrayCol;
-    timestamptzArrayCol: UsersFields.timestamptzArrayCol;
+const UsersFields_email = t.string;
+const UsersFields_id = t.number;
+const UsersFields_passCrypt = t.string;
+const UsersFields_creationTime = DateType;
+const UsersFields_displayName = t.string;
+const UsersFields_dataPublic = t.boolean;
+const UsersFields_description = t.string;
+const UsersFields_homeLat = t.union([t.null, t.number]);
+const UsersFields_homeLon = t.union([t.null, t.number]);
+const UsersFields_homeZoom = t.union([t.null, t.number]);
+const UsersFields_nearby = t.union([t.null, t.number]);
+const UsersFields_passSalt = t.union([t.null, t.string]);
+const UsersFields_imageFileName = t.union([t.null, t.string]);
+const UsersFields_emailValid = t.boolean;
+const UsersFields_newEmail = t.union([t.null, t.string]);
+const UsersFields_creationIp = t.union([t.null, t.string]);
+const UsersFields_languages = t.union([t.null, t.string]);
+const UsersFields_status = UserStatusEnum;
+const UsersFields_termsAgreed = t.union([t.null, DateType]);
+const UsersFields_considerPd = t.boolean;
+const UsersFields_preferredEditor = t.union([t.null, t.string]);
+const UsersFields_termsSeen = t.boolean;
+const UsersFields_authUid = t.union([t.null, t.string]);
+const UsersFields_descriptionFormat = FormatEnum;
+const UsersFields_imageFingerprint = t.union([t.null, t.string]);
+const UsersFields_changesetsCount = t.number;
+const UsersFields_tracesCount = t.number;
+const UsersFields_diaryEntriesCount = t.number;
+const UsersFields_imageUseGravatar = t.boolean;
+const UsersFields_imageContentType = t.union([t.null, t.string]);
+const UsersFields_authProvider = t.union([t.null, t.string]);
+const UsersFields_uuidColumn = t.union([t.null, t.string]);
+const UsersFields_number_ = t.union([t.null, t.number]);
+const UsersFields_string_ = t.union([t.null, t.string]);
+const UsersFields_moneyCol = t.union([t.null, t.number]);
+const UsersFields_charCol = t.union([t.null, t.string]);
+const UsersFields_timeCol = t.union([t.null, t.string]);
+const UsersFields_inetCol = t.union([t.null, t.string]);
+const UsersFields_jsonbCol = t.union([t.null, t.object]);
+const UsersFields_numericCol = t.union([t.null, t.number]);
+const UsersFields_byteaCol = t.union([t.null, t.string]);
+const UsersFields_boolArrayCol = t.union([t.null, t.array(t.boolean)]);
+const UsersFields_varcharArrayCol = t.union([t.null, t.array(t.string)]);
+const UsersFields_int2ArrayCol = t.union([t.null, t.array(t.number)]);
+const UsersFields_int4ArrayCol = t.union([t.null, t.array(t.number)]);
+const UsersFields_int8ArrayCol = t.union([t.null, t.array(t.number)]);
+const UsersFields_uuidArrayCol = t.union([t.null, t.array(t.string)]);
+const UsersFields_textArrayCol = t.union([t.null, t.array(t.string)]);
+const UsersFields_byteaArrayCol = t.union([t.null, t.array(t.string)]);
+const UsersFields_realCol = t.union([t.null, t.number]);
+const UsersFields_doubleCol = t.union([t.null, t.number]);
+const UsersFields_timeWithTz = t.union([t.null, t.string]);
+const UsersFields_oidCol = t.union([t.null, t.number]);
+const UsersFields_intervalCol = t.union([t.null, t.string]);
+const UsersFields_jsonCol = t.union([t.null, t.object]);
+const UsersFields_dateCol = t.union([t.null, DateType]);
+const UsersFields_unspportedPathType = t.union([t.null, t.any]);
+const UsersFields_nameTypeCol = t.union([t.null, t.string]);
+const UsersFields_jsonArrayCol = t.union([t.null, t.array(t.object)]);
+const UsersFields_jsonbArrayCol = t.union([t.null, t.array(t.object)]);
+const UsersFields_timestamptzArrayCol = t.union([t.null, t.array(DateType)]);
 
-}
+export const Users = t.type({
+    email: UsersFields_email,
+    id: UsersFields_id,
+    passCrypt: UsersFields_passCrypt,
+    creationTime: UsersFields_creationTime,
+    displayName: UsersFields_displayName,
+    dataPublic: UsersFields_dataPublic,
+    description: UsersFields_description,
+    homeLat: UsersFields_homeLat,
+    homeLon: UsersFields_homeLon,
+    homeZoom: UsersFields_homeZoom,
+    nearby: UsersFields_nearby,
+    passSalt: UsersFields_passSalt,
+    imageFileName: UsersFields_imageFileName,
+    emailValid: UsersFields_emailValid,
+    newEmail: UsersFields_newEmail,
+    creationIp: UsersFields_creationIp,
+    languages: UsersFields_languages,
+    status: UsersFields_status,
+    termsAgreed: UsersFields_termsAgreed,
+    considerPd: UsersFields_considerPd,
+    preferredEditor: UsersFields_preferredEditor,
+    termsSeen: UsersFields_termsSeen,
+    authUid: UsersFields_authUid,
+    descriptionFormat: UsersFields_descriptionFormat,
+    imageFingerprint: UsersFields_imageFingerprint,
+    changesetsCount: UsersFields_changesetsCount,
+    tracesCount: UsersFields_tracesCount,
+    diaryEntriesCount: UsersFields_diaryEntriesCount,
+    imageUseGravatar: UsersFields_imageUseGravatar,
+    imageContentType: UsersFields_imageContentType,
+    authProvider: UsersFields_authProvider,
+    uuidColumn: UsersFields_uuidColumn,
+    number: UsersFields_number_,
+    string: UsersFields_string_,
+    moneyCol: UsersFields_moneyCol,
+    charCol: UsersFields_charCol,
+    timeCol: UsersFields_timeCol,
+    inetCol: UsersFields_inetCol,
+    jsonbCol: UsersFields_jsonbCol,
+    numericCol: UsersFields_numericCol,
+    byteaCol: UsersFields_byteaCol,
+    boolArrayCol: UsersFields_boolArrayCol,
+    varcharArrayCol: UsersFields_varcharArrayCol,
+    int2ArrayCol: UsersFields_int2ArrayCol,
+    int4ArrayCol: UsersFields_int4ArrayCol,
+    int8ArrayCol: UsersFields_int8ArrayCol,
+    uuidArrayCol: UsersFields_uuidArrayCol,
+    textArrayCol: UsersFields_textArrayCol,
+    byteaArrayCol: UsersFields_byteaArrayCol,
+    realCol: UsersFields_realCol,
+    doubleCol: UsersFields_doubleCol,
+    timeWithTz: UsersFields_timeWithTz,
+    oidCol: UsersFields_oidCol,
+    intervalCol: UsersFields_intervalCol,
+    jsonCol: UsersFields_jsonCol,
+    dateCol: UsersFields_dateCol,
+    unspportedPathType: UsersFields_unspportedPathType,
+    nameTypeCol: UsersFields_nameTypeCol,
+    jsonArrayCol: UsersFields_jsonArrayCol,
+    jsonbArrayCol: UsersFields_jsonbArrayCol,
+    timestamptzArrayCol: UsersFields_timestamptzArrayCol
+});
+export interface Users extends t.TypeOf<typeof Users> { };

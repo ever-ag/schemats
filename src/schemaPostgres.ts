@@ -1,95 +1,76 @@
 import * as PgPromise from 'pg-promise'
-import { mapValues } from 'lodash'
 import { keys } from 'lodash'
 import Options from './options'
-
 import { TableDefinition, Database } from './schemaInterfaces'
+import { DatabaseBase, TypescriptType } from './schemaBase'
 
 const pgp = PgPromise()
 
-export class PostgresDatabase implements Database {
+export class PostgresDatabase extends DatabaseBase implements Database {
     private db: PgPromise.IDatabase<{}>
 
     constructor (public connectionString: string) {
+        super()
         this.db = pgp(connectionString)
     }
 
-    private static mapTableDefinitionToType (tableDefinition: TableDefinition, customTypes: string[], options: Options): TableDefinition {
-        return mapValues(tableDefinition, column => {
-            switch (column.udtName) {
-                case 'bpchar':
-                case 'char':
-                case 'varchar':
-                case 'text':
-                case 'citext':
-                case 'uuid':
-                case 'bytea':
-                case 'inet':
-                case 'time':
-                case 'timetz':
-                case 'interval':
-                case 'name':
-                    column.tsType = 'string'
-                    return column
-                case 'int2':
-                case 'int4':
-                case 'int8':
-                case 'float4':
-                case 'float8':
-                case 'numeric':
-                case 'money':
-                case 'oid':
-                    column.tsType = 'number'
-                    return column
-                case 'bool':
-                    column.tsType = 'boolean'
-                    return column
-                case 'json':
-                case 'jsonb':
-                    column.tsType = 'Object'
-                    return column
-                case 'date':
-                case 'timestamp':
-                case 'timestamptz':
-                    column.tsType = 'Date'
-                    return column
-                case '_int2':
-                case '_int4':
-                case '_int8':
-                case '_float4':
-                case '_float8':
-                case '_numeric':
-                case '_money':
-                    column.tsType = 'Array<number>'
-                    return column
-                case '_bool':
-                    column.tsType = 'Array<boolean>'
-                    return column
-                case '_varchar':
-                case '_text':
-                case '_citext':                    
-                case '_uuid':
-                case '_bytea':
-                    column.tsType = 'Array<string>'
-                    return column
-                case '_json':
-                case '_jsonb':
-                    column.tsType = 'Array<Object>'
-                    return column
-                case '_timestamptz':
-                    column.tsType = 'Array<Date>'
-                    return column
-                default:
-                    if (customTypes.indexOf(column.udtName) !== -1) {
-                        column.tsType = options.transformTypeName(column.udtName)
-                        return column
-                    } else {
-                        console.log(`Type [${column.udtName} has been mapped to [any] because no specific type has been found.`)
-                        column.tsType = 'any'
-                        return column
-                    }
-            }
-        })
+    protected static mapTableTypeToNativeType (tableType: string): TypescriptType {
+        switch (tableType) {
+            case 'bpchar':
+            case 'char':
+            case 'varchar':
+            case 'text':
+            case 'citext':
+            case 'uuid':
+            case 'bytea':
+            case 'inet':
+            case 'time':
+            case 'timetz':
+            case 'interval':
+            case 'name':
+                return 'string'
+            case 'int2':
+            case 'int4':
+            case 'int8':
+            case 'float4':
+            case 'float8':
+            case 'numeric':
+            case 'money':
+            case 'oid':
+                return 'number'
+            case 'bool':
+                return 'boolean'
+            case 'json':
+            case 'jsonb':
+                return 'Object'
+            case 'date':
+            case 'timestamp':
+            case 'timestamptz':
+                return 'Date'
+            case '_int2':
+            case '_int4':
+            case '_int8':
+            case '_float4':
+            case '_float8':
+            case '_numeric':
+            case '_money':
+                return 'Array<number>'
+            case '_bool':
+                return 'Array<boolean>'
+            case '_varchar':
+            case '_text':
+            case '_citext':
+            case '_uuid':
+            case '_bytea':
+                return 'Array<string>'
+            case '_json':
+            case '_jsonb':
+                return 'Array<Object>'
+            case '_timestamptz':
+                return 'Array<Date>'
+            default:
+                return 'any'
+        }
     }
 
     public query (queryString: string) {
