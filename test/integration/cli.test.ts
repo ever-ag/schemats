@@ -1,5 +1,7 @@
 import { spawnSync } from 'child_process'
 import * as assert from 'power-assert'
+import { loadSchema } from '../testUtility'
+import { getDatabase } from '../../src'
 
 describe('schemats cli tool integration testing', () => {
     describe('schemats generate postgres', () => {
@@ -23,6 +25,8 @@ describe('schemats cli tool integration testing', () => {
             if (!process.env.MYSQL_URL) {
                 return this.skip()
             }
+            const db = getDatabase(`${process.env.MYSQL_URL}?multipleStatements=true`)
+            await loadSchema(db, './test/fixture/mysql/initCleanup.sql')
         })
         it('should run without error', () => {
             let {status} = spawnSync('node', [
