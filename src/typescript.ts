@@ -88,9 +88,16 @@ function normalizeName (name: string, options: Options): string {
 export function generateTableInterface (tableNameRaw: string, tableDefinition: TableDefinition, options: Options) {
     const tableName = options.transformTypeName(tableNameRaw)
     const members: string[] = []
-    Object.keys(tableDefinition).map(c => options.transformColumnName(c)).forEach((columnName) => {
-        members.push(`${columnName}: ${tableName}Fields_${normalizeName(columnName, options)}`)
-    })
+    Object.keys(tableDefinition)
+        .map(k => ({ ...tableDefinition[k], column_name: options.transformColumnName(k) }))
+        .forEach((column) => {
+            let generatedCode = ''
+            if (column.comment) {
+                generatedCode += `/** ${column.comment} */\n`
+            }
+            generatedCode += `${column.column_name}: ${tableName}Fields_${normalizeName(column.column_name, options)}`
+            members.push(generatedCode)
+        })
 
     const interfaceName = normalizeName(tableName, options)
     return `

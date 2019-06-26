@@ -77,5 +77,15 @@ CREATE TABLE users (
     name_type_col name,
     json_array_col json[],
     jsonb_array_col jsonb[],
-    timestamptz_array_col timestamptz[]
+    timestamptz_array_col timestamptz[],
+    email_valid_with_description boolean DEFAULT false NOT NULL,
+    new_email_with_description character varying(255),
+    creation_ip_with_description character varying(255),
+    languages_with_description character varying(255)
 );
+
+
+COMMENT ON COLUMN users.email_valid_with_description IS 'email_valid description';
+COMMENT ON COLUMN users.new_email_with_description IS 'new_email description';
+COMMENT ON COLUMN users.creation_ip_with_description IS 'creation_ip description';
+COMMENT ON COLUMN users.languages_with_description IS 'languages description';
