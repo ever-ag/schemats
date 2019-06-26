@@ -165,9 +165,7 @@ var MysqlDatabase = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         tableDefinition = {};
-                        return [4 /*yield*/, this.queryAsync('SELECT column_name AS column_name, data_type AS data_type, is_nullable AS is_nullable ' +
-                                'FROM information_schema.columns ' +
-                                'WHERE table_name = ? and table_schema = ?', [tableName, tableSchema])];
+                        return [4 /*yield*/, this.queryAsync("\n            SELECT\n                column_name AS column_name,\n                data_type AS data_type,\n                is_nullable AS is_nullable,\n                column_comment AS column_comment\n            FROM information_schema.columns\n            WHERE table_name = ? AND table_schema = ?", [tableName, tableSchema])];
                     case 1:
                         tableColumns = _a.sent();
                         tableColumns.map(function (schemaItem) {
@@ -175,7 +173,8 @@ var MysqlDatabase = /** @class */ (function (_super) {
                             var dataType = schemaItem.data_type;
                             tableDefinition[columnName] = {
                                 udtName: /^(enum|set)$/i.test(dataType) ? MysqlDatabase.getEnumNameFromColumn(dataType, columnName) : dataType,
-                                nullable: schemaItem.is_nullable === 'YES'
+                                nullable: schemaItem.is_nullable === 'YES',
+                                comment: schemaItem.column_comment
                             };
                         });
                         return [2 /*return*/, tableDefinition];

@@ -154,12 +154,11 @@ var PostgresDatabase = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         tableDefinition = {};
-                        return [4 /*yield*/, this.db.each('SELECT column_name, udt_name, is_nullable ' +
-                                'FROM information_schema.columns ' +
-                                'WHERE table_name = $1 and table_schema = $2', [tableName, tableSchema], function (schemaItem) {
+                        return [4 /*yield*/, this.db.each("\n            SELECT\n                c.column_name,\n                c.udt_name,\n                c.is_nullable,\n                pgd.description\n            FROM information_schema.columns AS c\n            LEFT JOIN pg_catalog.pg_statio_all_tables AS st\n                ON c.table_schema = st.schemaname\n                AND c.table_name = st.relname\n            LEFT JOIN pg_catalog.pg_description AS pgd\n                ON st.relid = pgd.objoid\n                AND c.ordinal_position = pgd.objsubid\n            WHERE table_name = $1 AND table_schema = $2", [tableName, tableSchema], function (schemaItem) {
                                 tableDefinition[schemaItem.column_name] = {
                                     udtName: schemaItem.udt_name,
-                                    nullable: schemaItem.is_nullable === 'YES'
+                                    nullable: schemaItem.is_nullable === 'YES',
+                                    comment: schemaItem.description
                                 };
                             })];
                     case 1:

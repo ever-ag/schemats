@@ -3,6 +3,17 @@
  * Generate typescript interface from table schema
  * Created by xiamx on 2016-08-10.
  */
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 function nameIsReservedKeyword(name) {
     var reservedKeywords = [
@@ -83,8 +94,15 @@ function normalizeName(name, options) {
 function generateTableInterface(tableNameRaw, tableDefinition, options) {
     var tableName = options.transformTypeName(tableNameRaw);
     var members = [];
-    Object.keys(tableDefinition).map(function (c) { return options.transformColumnName(c); }).forEach(function (columnName) {
-        members.push(columnName + ": " + tableName + "Fields_" + normalizeName(columnName, options));
+    Object.keys(tableDefinition)
+        .map(function (k) { return (__assign({}, tableDefinition[k], { column_name: options.transformColumnName(k) })); })
+        .forEach(function (column) {
+        var generatedCode = '';
+        if (column.comment) {
+            generatedCode += "/** " + column.comment + " */\n";
+        }
+        generatedCode += column.column_name + ": " + tableName + "Fields_" + normalizeName(column.column_name, options);
+        members.push(generatedCode);
     });
     var interfaceName = normalizeName(tableName, options);
     return "\nexport const " + interfaceName + " = t.type({\n" + members.join(',\n') + "\n});\nexport interface " + interfaceName + " extends t.TypeOf<typeof " + interfaceName + "> { };\n";
