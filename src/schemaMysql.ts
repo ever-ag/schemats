@@ -6,7 +6,7 @@ import Options from './options'
 import { DatabaseBase, TypescriptType } from './schemaBase'
 
 export class MysqlDatabase extends DatabaseBase implements Database {
-    private db: mysql.IConnection
+    private db: mysql.Connection
     private defaultSchema: string
 
     constructor (public connectionString: string) {
@@ -149,7 +149,7 @@ export class MysqlDatabase extends DatabaseBase implements Database {
 
     public queryAsync (queryString: string, escapedValues?: Array<string>): Promise<Object[]> {
         return new Promise((resolve, reject) => {
-            this.db.query(queryString, escapedValues, (error: Error, results: Array<Object>) => {
+            this.db.query(queryString, escapedValues, (error: mysql.MysqlError, results: Array<Object>) => {
                 if (error) {
                     return reject(error)
                 }
