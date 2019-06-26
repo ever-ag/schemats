@@ -83,6 +83,7 @@ const usersFields_varbinary_col = BufferType;
 const usersFields_varbinary_col_nullable = t.union([t.null, BufferType]);
 const usersFields_year_col = t.number;
 const usersFields_year_col_nullable = t.union([t.null, t.number]);
+const usersFields_year_col_with_comment = t.number;
 
 export const users = t.type({
     bigint_col: usersFields_bigint_col,
@@ -143,7 +144,9 @@ export const users = t.type({
     varbinary_col: usersFields_varbinary_col,
     varbinary_col_nullable: usersFields_varbinary_col_nullable,
     year_col: usersFields_year_col,
-    year_col_nullable: usersFields_year_col_nullable
+    year_col_nullable: usersFields_year_col_nullable,
+    /** year_col comment */
+    year_col_with_comment: usersFields_year_col_with_comment
 });
 export interface users extends t.TypeOf<typeof users> { };
 

@@ -57,7 +57,8 @@ CREATE TABLE users (
     varbinary_col varbinary(255) NOT NULL,
     varbinary_col_nullable varbinary(255),
     year_col year NOT NULL,
-    year_col_nullable year
+    year_col_nullable year,
+    year_col_with_comment year NOT NULL COMMENT 'year_col comment'
 );
 
 DROP TABLE IF EXISTS user_enums;
