@@ -124,7 +124,8 @@ export class MysqlDatabase extends DatabaseBase implements Database {
             const dataType = schemaItem.data_type
             tableDefinition[columnName] = {
                 udtName: /^(enum|set)$/i.test(dataType) ? MysqlDatabase.getEnumNameFromColumn(dataType, columnName) : dataType,
-                nullable: schemaItem.is_nullable === 'YES'
+                nullable: schemaItem.is_nullable === 'YES',
+                comment: null
             }
         })
         return tableDefinition
