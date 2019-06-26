@@ -81,6 +81,10 @@ const usersFields_nameTypeCol = t.union([t.null, t.string]);
 const usersFields_jsonArrayCol = t.union([t.null, t.array(t.object)]);
 const usersFields_jsonbArrayCol = t.union([t.null, t.array(t.object)]);
 const usersFields_timestamptzArrayCol = t.union([t.null, t.array(DateType)]);
+const usersFields_emailValidWithDescription = t.boolean;
+const usersFields_newEmailWithDescription = t.union([t.null, t.string]);
+const usersFields_creationIpWithDescription = t.union([t.null, t.string]);
+const usersFields_languagesWithDescription = t.union([t.null, t.string]);
 
 export const users = t.type({
     email: usersFields_email,
@@ -143,6 +147,14 @@ export const users = t.type({
     nameTypeCol: usersFields_nameTypeCol,
     jsonArrayCol: usersFields_jsonArrayCol,
     jsonbArrayCol: usersFields_jsonbArrayCol,
-    timestamptzArrayCol: usersFields_timestamptzArrayCol
+    timestamptzArrayCol: usersFields_timestamptzArrayCol,
+    /** email_valid description */
+    emailValidWithDescription: usersFields_emailValidWithDescription,
+    /** new_email description */
+    newEmailWithDescription: usersFields_newEmailWithDescription,
+    /** creation_ip description */
+    creationIpWithDescription: usersFields_creationIpWithDescription,
+    /** languages description */
+    languagesWithDescription: usersFields_languagesWithDescription
 });
 export interface users extends t.TypeOf<typeof users> { };

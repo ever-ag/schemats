@@ -28,8 +28,8 @@ export interface package_ extends t.TypeOf<typeof package_> { };
         })
         it('table with columns', () => {
             const tableInterface = Typescript.generateTableInterface('tableName', {
-                col1: {udtName: 'name1', nullable: false},
-                col2: {udtName: 'name2', nullable: false}
+                col1: {udtName: 'name1', nullable: false, comment: null},
+                col2: {udtName: 'name2', nullable: false, comment: null}
             }, options)
             assert.equal(tableInterface,
 `
@@ -40,11 +40,27 @@ col2: tableNameFields_col2
 export interface tableName extends t.TypeOf<typeof tableName> { };
 `)
         })
+        it('table with columns descriptions', () => {
+            const tableInterface = Typescript.generateTableInterface('tableName', {
+                col1: {udtName: 'name1', nullable: false, comment: 'col1 description'},
+                col2: {udtName: 'name2', nullable: false, comment: 'col2 description'}
+            }, options)
+            assert.equal(tableInterface,
+`
+export const tableName = t.type({
+/** col1 description */
+col1: tableNameFields_col1,
+/** col2 description */
+col2: tableNameFields_col2
+});
+export interface tableName extends t.TypeOf<typeof tableName> { };
+`)
+        })
         it('table with reserved columns', () => {
             const tableInterface = Typescript.generateTableInterface('tableName', {
-                string: {udtName: 'name1', nullable: false},
-                number: {udtName: 'name2', nullable: false},
-                package: {udtName: 'name3', nullable: false}
+                string: {udtName: 'name1', nullable: false, comment: null},
+                number: {udtName: 'name2', nullable: false, comment: null},
+                package: {udtName: 'name3', nullable: false, comment: null}
             }, options)
             assert.equal(tableInterface,
 `
@@ -84,8 +100,8 @@ export type enum2 = t.TypeOf<typeof enum2>;
         })
         it('with table definitions', () => {
             const tableTypes = Typescript.generateTableTypes('tableName', {
-                col1: {udtName: 'name1', nullable: false, tsType: 'string', iotsType: 't.string'},
-                col2: {udtName: 'name2', nullable: false, tsType: 'number', iotsType: 't.number'}
+                col1: {udtName: 'name1', nullable: false, tsType: 'string', iotsType: 't.string', comment: null},
+                col2: {udtName: 'name2', nullable: false, tsType: 'number', iotsType: 't.number', comment: null}
             }, options)
             assert.equal(tableTypes,
 `
@@ -96,8 +112,20 @@ const tableNameFields_col2 = t.number;
         })
         it('with nullable column definitions', () => {
             const tableTypes = Typescript.generateTableTypes('tableName', {
-                col1: {udtName: 'name1', nullable: true, tsType: 'string', iotsType: 't.string'},
-                col2: {udtName: 'name2', nullable: true, tsType: 'number', iotsType: 't.number'}
+                col1: {udtName: 'name1', nullable: true, tsType: 'string', iotsType: 't.string', comment: null},
+                col2: {udtName: 'name2', nullable: true, tsType: 'number', iotsType: 't.number', comment: null}
+            }, options)
+            assert.equal(tableTypes,
+`
+const tableNameFields_col1 = t.union([t.null, t.string]);
+const tableNameFields_col2 = t.union([t.null, t.number]);
+
+`)
+        })
+        it('with column descriptions / comments', () => {
+            const tableTypes = Typescript.generateTableTypes('tableName', {
+                col1: {udtName: 'name1', nullable: true, tsType: 'string', iotsType: 't.string', comment: 'col1 comment'},
+                col2: {udtName: 'name2', nullable: true, tsType: 'number', iotsType: 't.number', comment: 'col2'}
             }, options)
             assert.equal(tableTypes,
 `
