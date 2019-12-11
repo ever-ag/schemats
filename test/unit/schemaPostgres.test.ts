@@ -271,6 +271,16 @@ describe('PostgresDatabase', () => {
                 }
                 assert.equal(PostgresDBReflection.mapTableDefinitionToType(td,[],options).column.tsType, 'string')
             })
+            it('date', () => {
+                const td: TableDefinition = {
+                    column: {
+                        udtName: 'date',
+                        nullable: false,
+                        comment: null
+                    }
+                }
+                assert.equal(PostgresDBReflection.mapTableDefinitionToType(td,[],options).column.tsType, 'string')
+            })
             it('name', () => {
                 const td: TableDefinition = {
                     column: {
@@ -399,16 +409,6 @@ describe('PostgresDatabase', () => {
             })
         })
         describe('maps to Date', () => {
-            it('date', () => {
-                const td: TableDefinition = {
-                    column: {
-                        udtName: 'date',
-                        nullable: false,
-                        comment: null
-                    }
-                }
-                assert.equal(PostgresDBReflection.mapTableDefinitionToType(td,[],options).column.tsType, 'Date')
-            })
             it('timestamp', () => {
                 const td: TableDefinition = {
                     column: {
