@@ -27,6 +27,7 @@ export class PostgresDatabase extends DatabaseBase implements Database {
             case 'time':
             case 'timetz':
             case 'interval':
+            case 'date':
             case 'name':
                 return 'string'
             case 'int2':
@@ -43,7 +44,6 @@ export class PostgresDatabase extends DatabaseBase implements Database {
             case 'json':
             case 'jsonb':
                 return 'Object'
-            case 'date':
             case 'timestamp':
             case 'timestamptz':
                 return 'Date'
