@@ -84,6 +84,7 @@ export async function typescriptOfSchema (db: Database|string,
         .then(tsOfTable => tsOfTable.join(''))
 
     let output = `/* tslint:disable */
+/* eslint:disable */
 
 import * as t from 'io-ts';
 const DateType = new t.Type<Date, Date, unknown>(
