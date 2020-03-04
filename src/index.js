@@ -123,7 +123,7 @@ function typescriptOfSchema(db, tables, schema, options) {
                             .then(function (tsOfTable) { return tsOfTable.join(''); })];
                 case 4:
                     interfaces = _b.sent();
-                    output = "/* tslint:disable */\n\nimport * as t from 'io-ts';\nconst DateType = new t.Type<Date, Date, unknown>(\n    'DateType',\n    (u): u is Date => u instanceof Date,\n    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),\n    a => a,\n);\nconst BufferType = new t.Type<Buffer, Buffer, unknown>(\n    'BufferType',\n    (u): u is Buffer => u instanceof Buffer,\n    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),\n    a => a,\n);\n";
+                    output = "/* tslint:disable */\n/* eslint:disable */\n\nimport * as t from 'io-ts';\nconst DateType = new t.Type<Date, Date, unknown>(\n    'DateType',\n    (u): u is Date => u instanceof Date,\n    (u, c) => (u instanceof Date ? t.success(u) : t.failure(u, c)),\n    a => a,\n);\nconst BufferType = new t.Type<Buffer, Buffer, unknown>(\n    'BufferType',\n    (u): u is Buffer => u instanceof Buffer,\n    (u, c) => (u instanceof Buffer ? t.success(u) : t.failure(u, c)),\n    a => a,\n);\n";
                     if (optionsObject.options.writeHeader) {
                         output += buildHeader(db, tables, schema, options);
                     }
